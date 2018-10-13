@@ -1,0 +1,4 @@
+Filter:
+1. Check if site is secure or not secure
+2. Compare sites visually
+3. Compare texts on sites
