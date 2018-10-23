@@ -1,0 +1,20 @@
+sound/
+      __init__.py
+      formats/
+              __init__.py
+              wavread.py
+              wavwrite.py
+              aiffread.py
+              aiffwrite.py
+              auread.py
+              auwrite.py
+      effects/
+              __init__.py
+              echo.py
+              surround.py
+              reverse.py
+      filters/
+              __init__.py
+              equalizer.py
+              vocoder.py
+              karaoke.py
