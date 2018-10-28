@@ -12,8 +12,6 @@ class logistic_model(object):
         self.B0_init = tf.random_normal([1,self.hidden_units_1])-0.5
         self.W1_init = tf.random_normal([self.hidden_units_1, self.output_units])-0.5
         self.B1_init = tf.random_normal([1,self.output_units])-0.5
-
-    
     
     def build_graph(self, learn_rate):
         
@@ -43,3 +41,6 @@ class logistic_model(object):
         self.mistakes           = tf.abs(self.rounded_prediction - self.Y)
         self.mistake_fraction   = tf.reduce_sum(self.mistakes)/tf.to_float(tf.size(self.mistakes))
         self.accuracy           = 1.0 - self.mistake_fraction
+        
+        self.session = tf.Session()
+        self.session.run(tf.global_variables_initializer())

@@ -1,14 +1,18 @@
 from neuralnet import train_model
 from keywordSelector import textRazor
+from featureSelector import featureSelector
+from featureSelector import featureDict
 import subprocess
 import numpy as np
+import tensorflow as tf
+
+featureNum = 30
 
 '''
 Registered sites
 '''
-
 # Train Tensorflow neural network (or load when previously trained)
-#model = train_model.train_model('data/trainset.csv', hidden_units = 30, num_iterations = 1000, learning_rate = 0.03)
+model = train_model.train_model('data/trainset.csv', hidden_units = 30, num_iterations = 1000, learning_rate = 0.03)
 
 
 # Get websites selected by the user
@@ -17,11 +21,8 @@ registered_websites.append("https://www.paypal.com/mx")
 
 # Loop for each registered website
 for r_website in registered_websites:
-    print("Registered Website: " , r_website)
-
-    # Get webiste html tags from scrapper
-
-
+    print("\nLegitimate Website: " , r_website, "\n")
+    
     # Get keywords for each website (textRazor API)
     keywords = textRazor.getKeywordsArray(r_website, 0.5, 0.5)
 
@@ -38,18 +39,26 @@ for r_website in registered_websites:
 
     
     for p_website in phishing_websites:
-        print("Phishing Website: ", p_website)
+        print("Phishing Website: ", p_website, "\n")
 
         # Run Scrapper for current phishing website
         p = subprocess.call(["scrapy", "crawl", "phishingSpider", "-a", "domain=" + p_website], cwd="PI")
-        #p.wait()
-        
         
         # Get feature vector (30 features) for current phishing website
+        feature_vector = np.zeros((1, featureNum))
+        for i in range(featureNum):
+            feature_vector[0,i] = featureDict.dictionary[i+1](p_website)
         
-
+        print("Feature Vector: ")
+        print(feature_vector)
+        
+        
+        # Delete file obtained from scrapper
+        p = subprocess.call(["rm", "phish-site.html"], cwd="PI")
 
         # Make prediction for phishing probability for current site
-
-
+        phishing_probability = model.session.run(model.predict, feed_dict={model.X: feature_vector})
+        print("Phishing probability: " , str.format('{0:.3f}', phishing_probability[0,0]*100), "%")
+        
+        
     # Upload Phishing website probabilities

@@ -35,17 +35,14 @@ def train_model(traindata_path, hidden_units, num_iterations, learning_rate):
     model.build_graph(learning_rate)
 
     # Train model via gradient descent.
-    session = tf.Session()
-    session.run(tf.global_variables_initializer())
-
     for i in range(num_iterations):
-        session.run(model.grad_descent, feed_dict={model.X: train_X, model.Y: train_Y})
+        model.session.run(model.grad_descent, feed_dict={model.X: train_X, model.Y: train_Y})
 
-    train_accuracy = session.run(model.accuracy, feed_dict={model.X: train_X, model.Y: train_Y})
-    test_accuracy  = session.run(model.accuracy, feed_dict={model.X: test_X, model.Y: test_Y})
+    train_accuracy = model.session.run(model.accuracy, feed_dict={model.X: train_X, model.Y: train_Y})
+    test_accuracy  = model.session.run(model.accuracy, feed_dict={model.X: test_X, model.Y: test_Y})
 
-    test_predict = session.run(model.predict, feed_dict={model.X: test_X, model.Y: test_Y})
-    print("Training Set accuracy:" , str.format('{0:.3f}', train_accuracy*100), "%")
+    test_predict = model.session.run(model.predict, feed_dict={model.X: test_X, model.Y: test_Y})
+    print("\nTraining Set accuracy:" , str.format('{0:.3f}', train_accuracy*100), "%")
     print("Test Set accuracy:" , str.format('{0:.3f}', test_accuracy*100), "%")
     
     return model
