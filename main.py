@@ -4,16 +4,18 @@ from featureSelector import featureSelector
 from featureSelector import featureDict
 import subprocess
 import numpy as np
-import tensorflow as tf
 
-featureNum = 30
+
+#Possible negative features
+# 14, 15
+# Array of implemented features (numbers from 1 - 30 in order) 
+implemented_features = [6,8,12,14,15,23]
 
 '''
 Registered sites
 '''
 # Train Tensorflow neural network (or load when previously trained)
-model = train_model.train_model('data/trainset.csv', hidden_units = 30, num_iterations = 1000, learning_rate = 0.03)
-
+model = train_model.train_model('data/trainset.csv', implemented_features , hidden_units = 30, num_iterations = 1000, learning_rate = 0.03)
 
 # Get websites selected by the user
 registered_websites = []
@@ -34,9 +36,10 @@ for r_website in registered_websites:
     '''
     # Get array of possible phishing websites for this registered website (Google Search)
     phishing_websites = []
-    #phishing_websites.append("https://www.wikipedia.org")
-    phishing_websites.append("https://www.w3schools.com/html/html_iframe.asp")
-
+    phishing_websites.append("https://www.wikipedia.org")
+    #phishing_websites.append("https://www.w3schools.com/html/html_iframe.asp")
+    #phishing_websites.append("https://www2.deloitte.com/mx/es.html")
+    #phishing_websites.append("http://www.amzeon-accoints.com/")
     
     for p_website in phishing_websites:
         print("Phishing Website: ", p_website, "\n")
@@ -45,20 +48,20 @@ for r_website in registered_websites:
         p = subprocess.call(["scrapy", "crawl", "phishingSpider", "-a", "domain=" + p_website], cwd="PI")
         
         # Get feature vector (30 features) for current phishing website
-        feature_vector = np.zeros((1, featureNum))
-        for i in range(featureNum):
-            feature_vector[0,i] = featureDict.dictionary[i+1](p_website)
+        feature_vector = np.zeros((1, len(implemented_features)))
+        for i in range(len(implemented_features)):
+            feature_vector[0,i] = featureDict.dictionary[implemented_features[i]](p_website)
         
         print("Feature Vector: ")
         print(feature_vector)
         
         
         # Delete file obtained from scrapper
-        p = subprocess.call(["rm", "phish-site.html"], cwd="PI")
+        #p = subprocess.call(["rm", "phish-site.html"], cwd="PI")
 
         # Make prediction for phishing probability for current site
-        phishing_probability = model.session.run(model.predict, feed_dict={model.X: feature_vector})
-        print("Phishing probability: " , str.format('{0:.3f}', phishing_probability[0,0]*100), "%")
+        legit_probability = model.session.run(model.predict, feed_dict={model.X: feature_vector})
+        print("Phishing probability: " , str.format('{0:.3f}', (1-legit_probability[0,0])*100), "%")
         
         
     # Upload Phishing website probabilities

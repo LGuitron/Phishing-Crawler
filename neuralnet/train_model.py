@@ -8,10 +8,23 @@ from neuralnet import read_dataset
 This function returns tensorflow model for future predictions with unlabeled data
 
 '''
-def train_model(traindata_path, hidden_units, num_iterations, learning_rate):
+def train_model(traindata_path, implemented_features ,hidden_units, num_iterations, learning_rate):
 
-    # Load and shuffle dataset
+    # Calculate indices of features to take into account
+    feature_indices = []
+    for i in range(len(implemented_features)):
+        feature_indices.append(implemented_features[i]-1)
+        
+    # Always include label column
+    feature_indices.append(30)
+    
+    # Load Dataset
     dataset = read_dataset.read_dataset(traindata_path)
+    
+    # Select only implemented features
+    dataset = dataset[:,feature_indices]
+    
+    # Shuffle dataset
     np.random.shuffle(dataset)
 
 
@@ -44,5 +57,5 @@ def train_model(traindata_path, hidden_units, num_iterations, learning_rate):
     test_predict = model.session.run(model.predict, feed_dict={model.X: test_X, model.Y: test_Y})
     print("\nTraining Set accuracy:" , str.format('{0:.3f}', train_accuracy*100), "%")
     print("Test Set accuracy:" , str.format('{0:.3f}', test_accuracy*100), "%")
-    
+
     return model
