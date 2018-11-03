@@ -1,4 +1,5 @@
 from neuralnet import train_model
+from Strausz import googleSearch
 from keywordSelector import textRazor
 from featureSelector import featureSelector
 from featureSelector import featureDict
@@ -25,21 +26,24 @@ registered_websites.append("https://www.paypal.com/mx")
 for r_website in registered_websites:
     print("\nLegitimate Website: " , r_website, "\n")
     
-    # Get keywords for each website (textRazor API)
-    keywords = textRazor.getKeywordsArray(r_website, 0.5, 0.5)
-    #print(keywords)
-    #exit()
-    # Upload registered website info in database
+    keywords = googleSearch.getKeywordsArray(r_website, 0.5, 0.5)
+    
+    print("Keywords:")
+    for i in range(2):
+        print(keywords[i])
+    
+    print()
+    
+    json = googleSearch.googleSearch(keywords, "Paypal")
+    # TODO get links only from google search
+
     
     '''
     Phishing sites
     '''
     # Get array of possible phishing websites for this registered website (Google Search)
     phishing_websites = []
-    phishing_websites.append("http://recadastramento-st.ddns.net/sic3/levono/AutenticaPJ.php")
-    #phishing_websites.append("https://www.w3schools.com/html/html_iframe.asp")
-    #phishing_websites.append("https://www2.deloitte.com/mx/es.html")
-    #phishing_websites.append("http://www.amzeon-accoints.com/")
+    phishing_websites.append("https://www2.deloitte.com/mx/es.html")
     
     for p_website in phishing_websites:
         print("Phishing Website: ", p_website, "\n")
@@ -48,14 +52,10 @@ for r_website in registered_websites:
         p = subprocess.call(["scrapy", "crawl", "phishingSpider", "-a", "domain=" + p_website], cwd="PI")
         
         # Get feature vector (30 features) for current phishing website
-        #feature_vector = np.zeros((1, len(implemented_features)))
-        #for i in range(len(implemented_features)):
-        #    feature_vector[0,i] = featureDict.dictionary[implemented_features[i]](p_website)
-        
-        
-        feature_vector = [[0,0,0-1]]
-        feature_vector = np.array(feature_vector)
-        
+        feature_vector = np.zeros((1, len(implemented_features)))
+        for i in range(len(implemented_features)):
+            feature_vector[0,i] = featureDict.dictionary[implemented_features[i]](p_website)
+
         
         print("Feature Vector: ")
         print(feature_vector)
