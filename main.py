@@ -6,7 +6,6 @@ from featureSelector import featureDict
 import subprocess
 import numpy as np
 
-
 #Possible negative features
 # 14, 15
 # Array of implemented features (numbers from 1 - 30 in order) 
