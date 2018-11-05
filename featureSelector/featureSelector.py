@@ -2,6 +2,8 @@ import OpenSSL
 import ssl, socket
 import subprocess
 from bs4 import BeautifulSoup
+import requests
+from datetime import datetime, timedelta
 
 
 # Function that returns 0 (for not implemented functions)
@@ -116,4 +118,27 @@ def link_ownership(url, links):
                 owned += 1
 
     return owned/len(links)
+
+def domain_age(domain):
+	apiKey = 'at_ihb1nWWpJYvoL2l985uMwz6WpeIJa'
+	url_whois = 'https://www.whoisxmlapi.com/whoisserver/WhoisService?'\
+    + 'domainName=' + domain + '&apiKey=' + apiKey + "&outputFormat=JSON"
+	r = requests.get(url_whois)
+	results = r.json()
+	createdDate = results['WhoisRecord']['createdDate']
+	createdDate = createdDate.split('T')[0]
+	createdDate = datetime.strptime(createdDate, '%Y-%m-%d')
+	six_months = datetime.now() - timedelta(days=185)
+	if createdDate < six_months:
+		return 1
+	else:
+		return -1
+
+
+
+def long_url(url):
+	if len(url) > 50:
+		return -1
+	else:
+		return 1
     
