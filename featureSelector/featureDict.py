@@ -2,7 +2,7 @@ from featureSelector import *
 
 dictionary = {
                 1 : featureSelector.zeroFeature,
-                2 : featureSelector.zeroFeature,
+                2 : featureSelector.long_url,
                 3 : featureSelector.zeroFeature,
                 4 : featureSelector.zeroFeature,
                 5 : featureSelector.zeroFeature,
@@ -24,7 +24,7 @@ dictionary = {
                 21 : featureSelector.zeroFeature,
                 22 : featureSelector.zeroFeature,
                 23 : featureSelector.iframe,
-                24 : featureSelector.zeroFeature,
+                24 : featureSelector.domain_age,
                 25 : featureSelector.zeroFeature,
                 26 : featureSelector.zeroFeature,
                 27 : featureSelector.zeroFeature,
