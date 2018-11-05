@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from scrapy_splash import SplashFormReques
+from scrapy_splash import SplashRequest
 
-
+# TODO: Publish to heroku and call from flask API
 class DeloitteSpider(scrapy.Spider):
     name = 'deloitte'
     
     def start_requests(self):
        start_urls = ['https://www2.deloitte.com/mx/es.html', 'https://www2.deloitte.com/mx/es/pages/energy-and-resources/articles/la-paradoja-de-la-industria-4-0.html']
        for url in start_urls:
-            yield scrapy.Request(url=url, callback=self.parse)
+            yield SplashRequest(
+                url=url, 
+                callback=self.parse
+            )
      
 
 
