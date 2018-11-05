@@ -74,9 +74,9 @@ def googleSearch(keywords, company_name):
 
     #keywords = getKeywordsArray(site_url, 0.5, 0.5)
 
-    for i in range(2):
+    for i in range(5):
         word = keywords[i]
-        word = word.replace(" ", "%2520")
+        #word = word.replace(" ", "%2520")
         googleUrl = url + word + company_name
         r = requests.get(googleUrl)
         results[word] = r.json()

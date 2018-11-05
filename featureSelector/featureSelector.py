@@ -19,6 +19,9 @@ def pref_suf(url):
 # Feature #8 (1.1.8)
 def ssl_state(url):
     
+    # TODO do this wih openSSL library
+    return https_token(url)
+    '''
     protocol = url.split("//")[0]
     if "https" not in protocol:
         return -1            # Phishing
@@ -30,6 +33,7 @@ def ssl_state(url):
         return -1            # Phishing
     
     return 1                 # Legitimate
+    '''
 
 # Feature #12 (1.1.12)
 def https_token(url):
