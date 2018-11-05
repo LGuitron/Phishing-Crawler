@@ -2,7 +2,7 @@
 import scrapy
 from scrapy_splash import SplashRequest
 
-# TODO: Publish to heroku and call from flask API
+# TODO: Publish to firebase and call from flask API
 class DeloitteSpider(scrapy.Spider):
     name = 'deloitte'
     
@@ -19,6 +19,4 @@ class DeloitteSpider(scrapy.Spider):
     def parse(self, response):
         page = response.url.split("/")[-1]
         filename = 'page-%s.html' % page
-        with open(filename, 'wb') as f:
-            f.write(response.body)
-        self.log('Saved file %s' % filename)
+        yield response
