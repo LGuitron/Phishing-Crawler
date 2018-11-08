@@ -12,7 +12,7 @@ def run(company_name, domain_2_check):
     #Possible negative features
     # 14, 15
     # Array of implemented features (numbers from 1 - 30 in order) 
-    implemented_features = [6,8,12,23]
+    implemented_features = [2,6,8,12,23,24]
 
     # Train Tensorflow neural network (or load when previously trained)
     model = train_model.train_model('data/trainset.csv', implemented_features , hidden_units = 30, num_iterations = 1000, learning_rate = 0.03)
@@ -52,6 +52,7 @@ def run(company_name, domain_2_check):
 
                         # Run Scrapper for current phishing website
                         p = subprocess.call(["scrapy", "crawl", "phishingSpider", "-a", "domain=" + p_website], cwd="PI")
+                        p = subprocess.call(["scrapy", "crawl", "spider", "-a", "domain=" + p_website], cwd="PI")
 
                         # Get feature vector (30 features) for current phishing website
                         feature_vector = np.zeros((1, len(implemented_features)))

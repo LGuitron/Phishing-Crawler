@@ -119,7 +119,7 @@ def link_ownership(url, links):
 
     return owned/len(links)
 
-# Feature #2 1.1.2 2
+# Feature # 24 (1.4.1)
 def domain_age(domain):
 	apiKey = 'at_ihb1nWWpJYvoL2l985uMwz6WpeIJa'
 	url_whois = 'https://www.whoisxmlapi.com/whoisserver/WhoisService?'\
@@ -136,7 +136,7 @@ def domain_age(domain):
 		return -1
 
 
-
+# Feature #2 (1.1.2)
 def long_url(url):
 	if len(url) > 50:
 		return -1
