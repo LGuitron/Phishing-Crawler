@@ -126,14 +126,17 @@ def domain_age(domain):
     + 'domainName=' + domain + '&apiKey=' + apiKey + "&outputFormat=JSON"
 	r = requests.get(url_whois)
 	results = r.json()
-	createdDate = results['WhoisRecord']['createdDate']
-	createdDate = createdDate.split('T')[0]
-	createdDate = datetime.strptime(createdDate, '%Y-%m-%d')
-	six_months = datetime.now() - timedelta(days=185)
-	if createdDate < six_months:
-		return 1
-	else:
-		return -1
+
+	if("WhoisRecord" in results and "createdDate" in results['WhoisRecord']):
+		createdDate = results['WhoisRecord']['createdDate']
+		createdDate = createdDate.split('T')[0]
+		createdDate = datetime.strptime(createdDate, '%Y-%m-%d')
+		six_months = datetime.now() - timedelta(days=185)
+		if createdDate < six_months:
+			return 1
+		else:
+			return -1
+	return 0
 
 
 # Feature #2 (1.1.2)
