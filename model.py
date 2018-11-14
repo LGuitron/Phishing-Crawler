@@ -30,13 +30,12 @@ suspicious_probabilities = []
 phishing_domains = []
 phishing_probabilities = []
 
-def run(company_name, domain_2_check):
+def run(company_name, domain_2_check, implemented_features, trust_threshold, suspicious_threshold):
 
-    # Possible negative features
-    # 14, 15
+
 
     # Array of implemented features (numbers from 1 - 30 in order) 
-    implemented_features = [2,6,8,12,23,24]
+    #implemented_features = [2,6,8,12,23,24]
 
     # Train Tensorflow neural network (or load when previously trained)
     model = train_model.train_model('data/trainset.csv', implemented_features , hidden_units = 30, num_iterations = 1000, learning_rate = 0.03)
@@ -46,7 +45,7 @@ def run(company_name, domain_2_check):
     registered_websites.append(domain_2_check)
 
     # Get list of trusted domains to avoid checking them with the tensorflow model
-    trust_threshold = 0.01                                                # Trust websites if phishing probability is below this value
+    # trust_threshold = 0.01                                                # Trust websites if phishing probability is below this value
 
     domains_fb = db.child(company_name).child("trusted").get()
     domains_fb = domains_fb.val()
@@ -80,7 +79,6 @@ def run(company_name, domain_2_check):
 
                         # Run Scrapper for current phishing website
                         p = subprocess.call(["scrapy", "crawl", "phishingSpider", "-a", "domain=" + p_website], cwd="PI")
-                        #p = subprocess.call(["scrapy", "crawl", "spider", "-a", "domain=" + p_website], cwd="PI")
 
                         # Get feature vector (30 features) for current phishing website
                         feature_vector = np.zeros((1, len(implemented_features)))
@@ -97,7 +95,7 @@ def run(company_name, domain_2_check):
                         # Add domain to trusted domains if probability is below threshold
                         if (1 - legit_probability[0, 0] < trust_threshold):
                             trusted_domains.append(p_domain)
-                        elif (1 - legit_probability[0, 0] < 0.3):
+                        elif (1 - legit_probability[0, 0] < suspicious_threshold):
                             suspicious_domains.append(p_domain)
                             suspicious_probabilities.append(1 - legit_probability[0, 0])
                         else:
@@ -148,15 +146,19 @@ def getPhishingProbability(test_domains, implemented_features):
         legit_probability = model.session.run(model.predict, feed_dict={model.X: feature_vector})
         print("Phishing probability: ", str.format('{0:.3f}', (1 - legit_probability[0, 0]) * 100), "%", "\n")
 
+# Possible negative features
+# 14, 15
+implemented_features = [2,6,8,12,23,24]
+trust_threshold    = 0.01
+suspicious_threshold = 0.30
 
 # Get probability of a particular phishing website
-#implemented_features = [2,6,8,12,23,24]
 #test_domains = ["http://idunsfcs.com/ssv/cascome.htm"]
 #getPhishingProbability(test_domains, implemented_features)
 
 
 # Look for phishing website based on company name an domain
-run("Paypal", "https://www.paypal.com/mx/home")
-run("Facebook", "https://www.facebook.com/")
-run("Deloitte", "https://www2.deloitte.com/mx/es.html")
-run("Microsoft", "https://onedrive.live.com/about/es-mx/")
+run("Paypal", "https://www.paypal.com/mx/home", implemented_features, trust_threshold, suspicious_threshold)
+run("Facebook", "https://www.facebook.com/", implemented_features, trust_threshold, suspicious_threshold)
+run("Deloitte", "https://www2.deloitte.com/mx/es.html", implemented_features, trust_threshold, suspicious_threshold)
+run("Microsoft", "https://onedrive.live.com/about/es-mx/", implemented_features, trust_threshold, suspicious_threshold)
