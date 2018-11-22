@@ -1,6 +1,5 @@
 from neuralnet import train_model
 from Strausz import googleSearch
-from keywordSelector import textRazor
 from featureSelector import featureSelector
 from featureSelector import featureDict
 import subprocess
@@ -153,11 +152,28 @@ trust_threshold    = 0.01
 suspicious_threshold = 0.30
 
 # Get probability of a particular phishing website
-#test_domains = ["http://idunsfcs.com/ssv/cascome.htm"]
+'''
+test_domains = ["http://aquarelas94.com/css/application/renewal/identity/try/upgrade/security/contents/index.php",
+                "https://twitter.com/onedrive",
+                "https://click.mail.onedrive.com/?qs=a39b03b50dc27ef245997bf2d6e37e2e4090b22aa32fe216a1217f7b36d2aab0eba1374eb62bc068b277b99fa462189788801b9d1bf8c1a0d8e31fd616643119",
+                "http://ogofarm.com/CF",
+                "http://stcroixlofts.com/inc/manager/config/auth/log/3ca9cf355a2b9e09f921b4634a78d907ZTk0ODhmYzU1YWY2ZTk4NTkzMjhhOWEzN2QzZjZlYmQ=/resolution/websc_login/",
+                "http://marcoferno.com/po/order/order/biggyoff/",
+                "http://pakital.com/bbbb/suntrustrequestuseridpassword.html",
+                "http://pakital.com/bbbb/suntrust.html",
+                "http://stcroixlofts.com/inc/manager/config/auth/log/66e74b07f09d780b0e0f87365716582cMzc3YjUyMTA2ZjE2ZDA4ZDk0MTgyNzZiOWJlZjZiY2E=/resolution/websc_login/",
+                "http://bbfurnitureconcepts.com/sennottinsurance/fonts/",
+                "http://jjohnson10.com/pdf/adobeCom/inc/",
+                "http://stcroixlofts.com/inc/manager/config/auth/log/e5548beb55def8126c8980670deb857aZWYzYjI3MDA5NzFmZDVmNjNiYWEzZjdlMWVkNTNhODc=/resolution/websc_login/",
+                "https://payqal-check-com.umbler.net/log/5f98ad632f858cb66bbf285691b789f1YjdjODRkM2E5ZWUwOGYyMDEyODI1YWI2NTFjNGY5NjU=/myaccount/websc_login/?country.x=US&locale.x=en_US",
+                "http://www.kadirdekorasyon.com/wp-content/plugins/vwcleanerplugin/drama/",
+                "https://dispute-webbsid71.redirectme.net/?k4mpl3ngzob"]
+'''
 #getPhishingProbability(test_domains, implemented_features)
 
 
 # Look for phishing website based on company name an domain
+run("Amazon", "https://www.amazon.com/", implemented_features, trust_threshold, suspicious_threshold)
 run("Paypal", "https://www.paypal.com/mx/home", implemented_features, trust_threshold, suspicious_threshold)
 run("Facebook", "https://www.facebook.com/", implemented_features, trust_threshold, suspicious_threshold)
 run("Deloitte", "https://www2.deloitte.com/mx/es.html", implemented_features, trust_threshold, suspicious_threshold)

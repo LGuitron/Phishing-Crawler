@@ -153,23 +153,25 @@ def link_ownership(url, links):
 
 # Feature # 24 (1.4.1)
 def domain_age(domain):
-	apiKey = 'at_ihb1nWWpJYvoL2l985uMwz6WpeIJa'
-	url_whois = 'https://www.whoisxmlapi.com/whoisserver/WhoisService?'\
-    + 'domainName=' + domain + '&apiKey=' + apiKey + "&outputFormat=JSON"
-	r = requests.get(url_whois)
-	results = r.json()
+    try:
+        apiKey = 'at_ihb1nWWpJYvoL2l985uMwz6WpeIJa'
+        url_whois = 'https://www.whoisxmlapi.com/whoisserver/WhoisService?'\
+        + 'domainName=' + domain + '&apiKey=' + apiKey + "&outputFormat=JSON"
+        r = requests.get(url_whois)
+        results = r.json()
 
-	if("WhoisRecord" in results and "createdDate" in results['WhoisRecord']):
-		createdDate = results['WhoisRecord']['createdDate']
-		createdDate = createdDate.split('T')[0]
-		createdDate = datetime.strptime(createdDate, '%Y-%m-%d')
-		six_months = datetime.now() - timedelta(days=185)
-		if createdDate < six_months:
-			return 1
-		else:
-			return -1
-	return 0
-
+        if("WhoisRecord" in results and "createdDate" in results['WhoisRecord']):
+            createdDate = results['WhoisRecord']['createdDate']
+            createdDate = createdDate.split('T')[0]
+            createdDate = datetime.strptime(createdDate, '%Y-%m-%d')
+            six_months = datetime.now() - timedelta(days=185)
+            if createdDate < six_months:
+                return 1
+            else:
+                return -1
+        return 0
+    except:
+        return 0
 
 # Feature #2 (1.1.2)
 def long_url(url):

@@ -17,7 +17,8 @@ url = 'https://www.googleapis.com/customsearch/v1?key=AIzaSyCNGghfsmXtrYn2VZrynp
 keywords = []
 
 def getKeywordsArray(url, min_relevance_score, min_topic_score):
-    textrazor.api_key = "1f0ebd1fc796a631ec72919329071930fede6007817a81744071c643"
+    #textrazor.api_key = "1f0ebd1fc796a631ec72919329071930fede6007817a81744071c643"
+    textrazor.api_key = "61c6b6644fcc630bd30a149e5d98eb762c57d10a0f390f519668ca88"
     client = textrazor.TextRazor(extractors=["entities", "topics"])
     response = client.analyze_url(url)
 
@@ -34,7 +35,7 @@ def getKeywordsArray(url, min_relevance_score, min_topic_score):
 def googleSearch():
     results = {}
 
-    keywords = getKeywordsArray("https://www2.deloitte.com/mx/es.html", 0.5, 0.5)
+    keywords = getKeywordsArray("https://www2.deloitte.com/mx/es.html", 0.4, 0.4)
     
     import textrazor
 import pyrebase
@@ -74,7 +75,7 @@ def googleSearch(keywords, company_name):
 
     #keywords = getKeywordsArray(site_url, 0.5, 0.5)
 
-    for i in range(5):
+    for i in range(len(keywords)):
         word = keywords[i]
         #word = word.replace(" ", "%2520")
         googleUrl = url + word + company_name
