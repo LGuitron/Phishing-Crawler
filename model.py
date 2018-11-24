@@ -169,12 +169,13 @@ test_domains = ["http://aquarelas94.com/css/application/renewal/identity/try/upg
                 "http://www.kadirdekorasyon.com/wp-content/plugins/vwcleanerplugin/drama/",
                 "https://dispute-webbsid71.redirectme.net/?k4mpl3ngzob"]
 '''
+#test_domains = ["www.itesm.mx"]
 #getPhishingProbability(test_domains, implemented_features)
 
 
 # Look for phishing website based on company name an domain
-run("Amazon", "https://www.amazon.com/", implemented_features, trust_threshold, suspicious_threshold)
-run("Paypal", "https://www.paypal.com/mx/home", implemented_features, trust_threshold, suspicious_threshold)
-run("Facebook", "https://www.facebook.com/", implemented_features, trust_threshold, suspicious_threshold)
-run("Deloitte", "https://www2.deloitte.com/mx/es.html", implemented_features, trust_threshold, suspicious_threshold)
-run("Microsoft", "https://onedrive.live.com/about/es-mx/", implemented_features, trust_threshold, suspicious_threshold)
+run("ITESM", "https://mitec.itesm.mx/dashboard/index.aspx", implemented_features, trust_threshold, suspicious_threshold)
+#run("Paypal", "https://www.paypal.com/mx/home", implemented_features, trust_threshold, suspicious_threshold)
+#run("Facebook", "https://www.facebook.com/", implemented_features, trust_threshold, suspicious_threshold)
+#run("Deloitte", "https://www2.deloitte.com/mx/es.html", implemented_features, trust_threshold, suspicious_threshold)
+#run("Microsoft", "https://onedrive.live.com/about/es-mx/", implemented_features, trust_threshold, suspicious_threshold)
